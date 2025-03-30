@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.memory-grid {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(2, 2fr);
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid black;
+  overflow: wrap;
+}
+
+.memory-card {
+  border: 1px solid black;
+  justify-items: center;
+  cursor: pointer;
+}
