@@ -1,22 +1,59 @@
 body {
   margin: 0;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
+  background-image: url('../public/assets/Walt-Disney-movies-ranked-illo.webp'); /* ✅ Correct Path */
+  /* background-image: url('public/assets/photo-1489599849927-2ee91cede3ba.avif'); ✅ Correct Path */
+  background-size: cover;  /* ✅ Makes sure the image covers the screen */
+  background-position: center; /* ✅ Centers the image */
+  background-repeat: no-repeat; /* ✅ Prevents tiling */
+  height: 100vh;
 }
 
 .memory-grid {
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(2, 2fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
   padding: 20px;
-  border: 1px solid black;
-  overflow: wrap;
 }
 
 .memory-card {
-  border: 1px solid black;
-  justify-items: center;
+  width: 250px;
+  height: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 10px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.memory-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.memory-card img {
+  width: 100%;
+  height: 90%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.memory-card p {
+  font-size: 1.6rem;
+  /* font-weight: bold; */
+  margin-top: 8px;
+  font-family: "Boogaloo", sans-serif;
+  letter-spacing: -1px;
+}
+
+.memory-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
