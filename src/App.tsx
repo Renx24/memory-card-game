@@ -9,6 +9,7 @@ function App() {
   const [clickedMovies, setClickedMovies] = useState<string[]>([]);
   const [highScore, setHighScore] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
+  const [numberOfCards, setNumberOfCards] = useState(4);
 
   // make sure image is valid (as opposed to image location being 404 error)
   const checkImage = (url: string): Promise<boolean> => {
@@ -58,7 +59,7 @@ function App() {
     setClickedMovies([]);
     setHighScore((prev) => Math.max(prev, currentScore));
     setCurrentScore(0);
-    setDisplayedMovies(shuffleArray(allMovies).slice(0, 4)); // reshuffle new set upon game end
+    setDisplayedMovies(shuffleArray(allMovies).slice(0, numberOfCards)); // reshuffle new set upon game end
   };
 
   // check win condition whenever currentScore changes
@@ -68,6 +69,12 @@ function App() {
       resetGame();
     }
   }, [currentScore, allMovies.length]); // runs when currentScore or movie count changes
+
+  useEffect(() => {
+    if (allMovies.length > 0) {
+      setDisplayedMovies(shuffleArray(allMovies).slice(0, numberOfCards));
+    }
+  }, [numberOfCards, allMovies]); // Runs when `numberOfCards` or `allMovies` changes
 
   const handleCardClick = (title: string) => {
     if (clickedMovies.includes(title)) {
@@ -86,24 +93,35 @@ function App() {
     );
 
     if (unclickedMovies.length === 0) {
-      setDisplayedMovies(shuffleArray(allMovies).slice(0, 4)); // fallback: reshuffle all
+      setDisplayedMovies(shuffleArray(allMovies).slice(0, numberOfCards)); // fallback: reshuffle all
       return;
     }
 
     let newMovies = shuffleArray(unclickedMovies).slice(0, 1);
     let remainingMovies = shuffleArray(allMovies)
       .filter((m) => !newMovies.includes(m))
-      .slice(0, 3);
+      .slice(0, numberOfCards - 1);
 
     setDisplayedMovies(shuffleArray([...newMovies, ...remainingMovies]));
   };
 
   return (
-    <>
+    <div className="app-container">
       <div className="text-section">
         <div className="instructions">
           <h1>Memory Card Game</h1>
           <p>Don't click on a card that you have already clicked on!</p>
+          <p>
+            Number of cards on the screen:{" "}
+            <input
+              className="number-of-cards"
+              type="number"
+              min="1"
+              max={allMovies.length}
+              value={numberOfCards}
+              onChange={(e) => setNumberOfCards(Number(e.target.value))}
+            />
+          </p>
         </div>
         <div className="scores">
           <p>
@@ -133,7 +151,7 @@ function App() {
         )}
       </div>
 
-      <footer className="github-link">
+      <footer className="github-links">
         <a href="https://github.com/Renx24/memory-card-game" target="_blank">
           Project repo
         </a>
@@ -142,7 +160,7 @@ function App() {
           Renx24
         </a>
       </footer>
-    </>
+    </div>
   );
 }
 

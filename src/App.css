@@ -10,6 +10,7 @@ body {
   overflow: hidden;
 }
 
+
 .text-section {
   font-family: "Inter", sans-serif;
   display: flex;
@@ -33,6 +34,9 @@ body {
   .text-section {
     padding: 15px;
     flex-direction: column;
+  }
+  .github-link {
+    position: relative;
   }
 }
 
@@ -68,7 +72,7 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
   justify-content: center;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -117,11 +121,10 @@ body {
   font-size: 4rem;
 }
 
-.github-link {
+.github-links {
   font-family: "Inter", sans-serif;
   font-size: 1.5rem;
   position: fixed;
-  left: 0;
   bottom: 0;
   width: 100%;
   text-align: center;
@@ -131,7 +134,7 @@ body {
   gap: 20px;
 }
 
-.github-link a {
+.github-links a {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -143,22 +146,22 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.github-link a:link, .github-link a:visited {
+.github-links a:link, .github-links a:visited {
   background-color: white;
 }
 
-.github-link a:hover, .github-link a:active {
+.github-links a:hover, .github-links a:active {
   background-color: #5FB8BC;
   color: white;
 }
 
-.github-link a svg {
+.github-links a svg {
   width: 24px;
   height: 24px;
   transition: transform 0.3s ease-in-out, fill 0.3s ease-in-out;
 }
 
-.github-link a:hover svg {
+.github-links a:hover svg {
   transform: rotate(360deg) scale(1.2);
   fill: white;
 }
