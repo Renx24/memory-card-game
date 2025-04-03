@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import MemoryCard from "./components/MemoryCard.tsx";
 import GithubSVG from "./components/GithubSVG.tsx";
+import TextSection from "./components/TextSection.tsx";
 
 function App() {
   const [allMovies, setAllMovies] = useState<any[]>([]);
@@ -31,22 +32,33 @@ function App() {
   // gets data once
   const getData = async () => {
     try {
-      let validMovies: any[] = [];
       const resp = await fetch("https://api.sampleapis.com/movies/animation");
       const json = await resp.json();
 
       if (Array.isArray(json)) {
         const shuffledMovies = shuffleArray(json);
 
-        for (const movie of shuffledMovies) {
-          if (validMovies.length >= shuffledMovies.length) break;
-          const isValid = await checkImage(movie.posterURL);
-          if (isValid) validMovies.push(movie);
+        // check all images
+        const validMovies = (
+          await Promise.all(
+            shuffledMovies.map(async (movie) => {
+              const isValid = await checkImage(movie.posterURL);
+              return isValid ? movie : null;
+            })
+          )
+        ).filter(Boolean);
+
+        setAllMovies(validMovies);
+
+        if (validMovies.length > 0) {
+          const initialMovies = shuffleArray(validMovies).slice(
+            0,
+            numberOfMovies
+          );
+          setFixedMovieSet(initialMovies);
+          setDisplayedMovies(initialMovies.slice(0, numberOfCards));
         }
       }
-
-      setAllMovies(validMovies);
-      setDisplayedMovies(shuffleArray(validMovies).slice(0, 4)); // pick 4 random valid movies to be displayed
     } catch (err: any) {
       console.error("Error fetching data:", err);
     }
@@ -120,43 +132,15 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="text-section">
-        <div className="instructions">
-          <h1>Memory Card Game</h1>
-          <p>Don't click on a card that you have already clicked on!</p>
-          <p>
-            Number of cards on the screen:{" "}
-            <input
-              type="number"
-              min="2"
-              max={allMovies.length}
-              value={numberOfCards}
-              onChange={(e) => setNumberOfCards(Number(e.target.value))}
-            />
-          </p>
-          <p>
-            Amount of total movies:{" "}
-            <input
-              type="number"
-              min={numberOfCards}
-              max={allMovies.length}
-              value={numberOfMovies}
-              onChange={(e) => setNumberOfMovies(Number(e.target.value))}
-            />
-          </p>
-        </div>
-        <div className="scores">
-          <p>
-            Score:{" "}
-            <span className="current-score">
-              {currentScore} / {numberOfMovies}
-            </span>
-          </p>
-          <p>
-            High Score: <span className="highscore">{highScore}</span>
-          </p>
-        </div>
-      </div>
+      <TextSection
+        numberOfCards={numberOfCards}
+        setNumberOfCards={setNumberOfCards}
+        numberOfMovies={numberOfMovies}
+        setNumberOfMovies={setNumberOfMovies}
+        currentScore={currentScore}
+        numberOfMoviesMax={allMovies.length}
+        highScore={highScore}
+      />
 
       <div className="memory-grid">
         {displayedMovies.length > 0 ? (
