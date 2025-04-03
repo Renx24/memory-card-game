@@ -17,6 +17,23 @@ const TextSection = ({
   numberOfMoviesMax,
   highScore,
 }: TextSectionProps) => {
+  const handleInputChange =
+    (setter: (value: number) => void) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+
+      // allow empty string for smoother user input
+      if (value === "") {
+        setter(0); // Optionally, keep track of empty state differently
+        return;
+      }
+
+      const numericValue = Number(value);
+      if (!isNaN(numericValue)) {
+        setter(numericValue);
+      }
+    };
+
   return (
     <div className="text-section">
       <div className="instructions">
@@ -28,8 +45,8 @@ const TextSection = ({
             type="number"
             min="2"
             max={numberOfMoviesMax}
-            value={numberOfCards}
-            onChange={(e) => setNumberOfCards(Number(e.target.value))}
+            value={numberOfCards || ""}
+            onChange={handleInputChange(setNumberOfCards)}
           />
         </p>
         <p>
@@ -38,8 +55,8 @@ const TextSection = ({
             type="number"
             min={numberOfCards}
             max={numberOfMoviesMax}
-            value={numberOfMovies}
-            onChange={(e) => setNumberOfMovies(Number(e.target.value))}
+            value={numberOfMovies || ""}
+            onChange={handleInputChange(setNumberOfMovies)}
           />
         </p>
       </div>

@@ -92,7 +92,7 @@ function App() {
   useEffect(() => {
     if (allMovies.length === 0) return; // prevent running when allMovies is empty
 
-    if (numberOfCards >= numberOfMovies) setNumberOfMovies(numberOfCards);
+    // if (numberOfCards >= numberOfMovies) setNumberOfMovies(numberOfCards);
 
     const newFixedMovies = shuffleArray(allMovies).slice(0, numberOfMovies);
     setFixedMovieSet(newFixedMovies);
