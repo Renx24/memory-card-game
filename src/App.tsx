@@ -10,6 +10,8 @@ function App() {
   const [highScore, setHighScore] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const [numberOfCards, setNumberOfCards] = useState(4);
+  const [numberOfMovies, setNumberOfMovies] = useState(20);
+  const [fixedMovieSet, setFixedMovieSet] = useState<any[]>([]);
 
   // make sure image is valid (as opposed to image location being 404 error)
   const checkImage = (url: string): Promise<boolean> => {
@@ -55,26 +57,37 @@ function App() {
     getData();
   }, []);
 
+  const shuffleNumberOfMovies = () => {
+    const sourceMovies = fixedMovieSet.length > 0 ? fixedMovieSet : allMovies;
+    return shuffleArray(sourceMovies).slice(0, numberOfCards);
+  };
+
   const resetGame = () => {
     setClickedMovies([]);
     setHighScore((prev) => Math.max(prev, currentScore));
     setCurrentScore(0);
-    setDisplayedMovies(shuffleArray(allMovies).slice(0, numberOfCards)); // reshuffle new set upon game end
+    setDisplayedMovies(shuffleNumberOfMovies()); // reshuffle new set upon game end
   };
 
   // check win condition whenever currentScore changes
   useEffect(() => {
-    if (currentScore > 0 && currentScore === allMovies.length) {
+    if (currentScore > 0 && currentScore === numberOfMovies) {
       alert("You win! Impressive!");
       resetGame();
     }
-  }, [currentScore, allMovies.length]); // runs when currentScore or movie count changes
+  }, [currentScore, numberOfMovies]);
 
   useEffect(() => {
-    if (allMovies.length > 0) {
-      setDisplayedMovies(shuffleArray(allMovies).slice(0, numberOfCards));
-    }
-  }, [numberOfCards, allMovies]); // Runs when `numberOfCards` or `allMovies` changes
+    if (allMovies.length === 0) return; // prevent running when allMovies is empty
+
+    const newFixedMovies = shuffleArray(allMovies).slice(0, numberOfMovies);
+    setFixedMovieSet(newFixedMovies);
+
+    // ensure displayedMovies is never empty
+    setDisplayedMovies(newFixedMovies.slice(0, numberOfCards));
+
+    setCurrentScore(0);
+  }, [numberOfCards, numberOfMovies, allMovies]);
 
   const handleCardClick = (title: string) => {
     if (clickedMovies.includes(title)) {
@@ -88,17 +101,17 @@ function App() {
     setClickedMovies(newClickedMovies);
     setCurrentScore((prev) => prev + 1);
 
-    let unclickedMovies = allMovies.filter(
+    let unclickedMovies = shuffleNumberOfMovies().filter(
       (movie) => !newClickedMovies.includes(movie.title)
     );
 
     if (unclickedMovies.length === 0) {
-      setDisplayedMovies(shuffleArray(allMovies).slice(0, numberOfCards)); // fallback: reshuffle all
+      setDisplayedMovies(shuffleNumberOfMovies()); // fallback: reshuffle all
       return;
     }
 
     let newMovies = shuffleArray(unclickedMovies).slice(0, 1);
-    let remainingMovies = shuffleArray(allMovies)
+    let remainingMovies = shuffleNumberOfMovies()
       .filter((m) => !newMovies.includes(m))
       .slice(0, numberOfCards - 1);
 
@@ -114,24 +127,33 @@ function App() {
           <p>
             Number of cards on the screen:{" "}
             <input
-              className="number-of-cards"
               type="number"
-              min="1"
+              min="2"
               max={allMovies.length}
               value={numberOfCards}
               onChange={(e) => setNumberOfCards(Number(e.target.value))}
             />
           </p>
+          <p>
+            Amount of total movies:{" "}
+            <input
+              type="number"
+              min={numberOfCards}
+              max={allMovies.length}
+              value={numberOfMovies}
+              onChange={(e) => setNumberOfMovies(Number(e.target.value))}
+            />
+          </p>
         </div>
         <div className="scores">
           <p>
-            Score: <span className="current-score">{currentScore}</span>
+            Score:{" "}
+            <span className="current-score">
+              {currentScore} / {numberOfMovies}
+            </span>
           </p>
           <p>
-            High Score:{" "}
-            <span className="highscore">
-              {highScore} / {allMovies.length}
-            </span>
+            High Score: <span className="highscore">{highScore}</span>
           </p>
         </div>
       </div>
