@@ -159,7 +159,14 @@ function App() {
         )}
       </div>
 
-      <footer className="github-links">
+      <footer
+        className="github-links"
+        style={
+          numberOfCards <= 4 && screen.width > 1200
+            ? { position: "fixed" }
+            : { position: "relative" }
+        }
+      >
         <a href="https://github.com/Renx24/memory-card-game" target="_blank">
           Project repo
         </a>
