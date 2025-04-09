@@ -24,7 +24,7 @@ const TextSection = ({
 
       // allow empty string for smoother user input
       if (value === "") {
-        setter(0); // Optionally, keep track of empty state differently
+        setter(0); //
         return;
       }
 
