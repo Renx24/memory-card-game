@@ -61,15 +61,15 @@ const TextSection = ({
         </p>
       </div>
       <div className="scores">
-        <p>
+        <div>
           Score:{" "}
-          <span className="current-score">
+          <div className="current-score">
             {currentScore} / {numberOfMovies}
-          </span>
-        </p>
-        <p>
-          High Score: <span className="highscore">{highScore}</span>
-        </p>
+          </div>
+        </div>
+        <div>
+          High Score: <div className="highscore">{highScore}</div>
+        </div>
       </div>
     </div>
   );
