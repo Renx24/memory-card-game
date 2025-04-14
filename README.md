@@ -40,6 +40,6 @@ React
 
 TypeScript
 
-Vite (recommended for fast development)
+Vite
 
 CSS Modules
