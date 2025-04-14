@@ -1,54 +1,45 @@
-# React + TypeScript + Vite
+# 🎮 Movie Memory Card Game
+A fun, interactive memory card game built with React and TypeScript. Test your memory by clicking on movie cards — but don’t click the same one twice!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live demo: https://renem.me/memory-card-game/
 
-Currently, two official plugins are available:
+## 📸 Preview
+![image](https://github.com/user-attachments/assets/0a67cdb9-361f-40b9-9836-05f80c33fbbb)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## 🧠 How It Works
+The game fetches animated movies from the SampleAPIs Movie API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+A random selection of movies is displayed as cards.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Click on each card once and only once — clicking the same card twice ends the game.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Each correct guess increases your score.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The game reshuffles cards after every guess to keep things challenging.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+The game tracks your current score and high score.
+
+## ⚙️ Features
+🖼️ Validates poster images to ensure no broken links.
+
+🎲 Dynamically shuffles and displays a customizable number of cards.
+
+🔢 Adjustable settings for:
+
+Total number of movies used in the game
+
+Number of cards shown per round
+
+💾 High score persists while the app is running.
+
+🧩 Component-based architecture.
+
+## 🛠️ Built With
+React
+
+TypeScript
+
+Vite (recommended for fast development)
+
+CSS Modules
